@@ -1,5 +1,4 @@
 <?php
-
 $parent_dir = dirname(__DIR__);
 
 $browscap_file = $parent_dir . "/vendor/browscap/Browscap.php";
@@ -113,18 +112,20 @@ function lowercase_everything(array $current_browser)
         })();
     </script>
     <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=<?php echo $pixel; ?>&amp;value=0" /></noscript>
+    <meta name="viewport" content="width='400px', initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
 <div style="margin: 200px, auto; width: 400px; text-align: center">
-    <h2>You made it!</h2>
+    <h2>Get STEEZEY - exclusively at S-mart.</h2>
+    <p>
+        <img src='img/tom1.jpg' />
+        <img src='img/tom2.gif' />
+    </p>
     <p>
         Your Browser Stack: <?php echo $browser_stack; ?>
     </p>
     <p>
         Your Pixel: <?php echo $pixel; ?>
-    </p>
-    <p>
-        <img src="http://24.media.tumblr.com/2e07608d0568bc909ced7860a9c4056c/tumblr_mmb8iuJOkn1qd05zeo1_400.gif" />
     </p>
 </div>
 </body>
