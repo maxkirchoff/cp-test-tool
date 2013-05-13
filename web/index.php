@@ -11,6 +11,16 @@ use NightStalker\PdoDriver;
 $conf_file = $parent_dir . "/src/conf/conf.php";
 $config = include $conf_file;
 
+if (isset($_GET['campaign']) && in_array($_GET['campaign'], $config['known_campaigns']))
+{
+        $campaign = $_GET['campaign'];
+}
+else
+{
+    echo "404 Homie.";
+    die();
+}
+
 $cache_location = sys_get_temp_dir() . '/browscap_cache';
 
 if (! file_exists($cache_location))
@@ -61,14 +71,18 @@ else
 PdoDriver::init($config);
 $pdo_driver = new \NightStalker\PdoDriver();
 
-$insert_sql = "INSERT INTO visits (user_agent,browser_stack,pixel_used,created) VALUES (:user_agent,:browser_stack,:pixel_used,:created)";
+$insert_sql = "INSERT INTO visits (campaign,user_agent,browser_stack,pixel_used,referer,server_var,created)
+                VALUES (:campaign,:user_agent,:browser_stack,:pixel_used,:referer,:server_var,:created)";
 $insert_query = $pdo_driver->handle()->prepare($insert_sql);
 
 $dt = new DateTime('now', new DateTimeZone('America/Los_Angeles'));
 $created = $dt->format('Y-m-d H:i:s');
 
 $params = array(
+    ':campaign' => $campaign,
     ':user_agent' => json_encode($current_browser),
+    ':referer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null,
+    ':server_var' => json_encode($_SERVER),
     ':browser_stack' => $browser_stack,
     ':pixel_used' => $pixel,
     ':created' => $created
@@ -95,10 +109,11 @@ function lowercase_everything(array $current_browser)
 }
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TESTASAURUS REX!!!</title>
+    <title><?php echo $campaign; ?> Campaign!</title>
     <script type="text/javascript">
         var fb_param = {};
         fb_param.pixel_id = '<?php echo $pixel; ?>';
@@ -116,10 +131,12 @@ function lowercase_everything(array $current_browser)
 </head>
 <body>
 <div style="margin: 200px, auto; width: 400px; text-align: center">
-    <h2>Get STEEZEY - exclusively at S-mart.</h2>
+    <h2>OMG Tacos are so hard to eat!</h2>
     <p>
-        <img src='img/tom1.jpg' />
-        <img src='img/tom2.gif' />
+        <img src='img/taco.gif' />
+    </p>
+    <p>
+        Your Campaign: <?php echo $campaign; ?>
     </p>
     <p>
         Your Browser Stack: <?php echo $browser_stack; ?>
@@ -129,4 +146,3 @@ function lowercase_everything(array $current_browser)
     </p>
 </div>
 </body>
-</html>

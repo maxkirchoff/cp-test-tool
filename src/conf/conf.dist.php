@@ -17,5 +17,9 @@ return array(
         'desktop-chrome'        =>  '',
         'desktop-firefox'       =>  '',
         'unknown'               =>  ''
+    ),
+    'known_campaigns' => array(
+        'taco',
+        'steeze'
     )
 );
